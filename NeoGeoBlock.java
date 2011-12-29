@@ -38,7 +38,7 @@ class NeoGeoBlock {
     public static final int FRAME_HEIGHT = 480;
 
     /**
-     * $B$9$Y$F$N;O$^$j!"$=$7$F=*$o$j(B
+     * すべての始まり、そして終わり
      */
     public static void main(String[] args) {
 
@@ -130,7 +130,7 @@ class NeoGeoBlock {
 
 
 /**
- * NeoGeoBlock$B$NIA<L$rC4Ev$9$k%/%i%9(B
+ * NeoGeoBlockの描写を担当するクラス
  */
 class Renderer {
 
@@ -155,7 +155,7 @@ class Renderer {
     }
 
     /**
-     * @param graphics $BIA2hBP>]$N(BGraphics
+     * @param graphics 描画対象のGraphics
      */
     public void render(Graphics graphics) {
         Graphics2D g = (Graphics2D)graphics;
@@ -252,14 +252,14 @@ class Renderer {
 
 
     /**
-     * $B%&%#%s%I%&>e$N@dBP:BI8$r<u$1<h$j!"%V%m%C%/$N:BI8$rJV$9(B
+     * ウィンドウ上の絶対座標を受け取り、ブロックの座標を返す
      *
-     * $B%&%#%s%I%&$KI=<($5$l$F$$$J$/$F$b!"(BBoard$B%/%i%9$G$=$N>l=j$K%V%m%C%/$,Dj5A$5$l$F$$$l$P!"$=$N%V%m%C%/:BI8$rJV$9(B
-     * $B%V%m%C%/$,B8:_$7$F$$$J$1$l$P(Bnull$B$rJV$9(B
+     * ウィンドウに表示されていなくても、Boardクラスでその場所にブロックが定義されていれば、そのブロック座標を返す
+     * ブロックが存在していなければnullを返す
      *
-     * @param x $B%&%#%s%I%&>e$N(Bx$B:BI8(B
-     * @param y $B%&%#%s%I%&>e$N(By$B:BI8(B
-     * @return $B%V%m%C%/$N:BI8(B
+     * @param x ウィンドウ上のx座標
+     * @param y ウィンドウ上のy座標
+     * @return ブロックの座標
      */
     public Block blockAt(int x, int y) {
         int bx = x / BLOCK_WIDTH;
@@ -282,7 +282,7 @@ class Renderer {
 
 
 /**
- * NeoGeoBlock$B$G$N%V%m%C%/(B1$B$DJ,$KAjEv$9$k%/%i%9(B
+ * NeoGeoBlockでのブロック1つ分に相当するクラス
  */
 class Block {
     public static final int None   = 0;
@@ -318,17 +318,17 @@ class Block {
     void fall() { state = FALLING; }
 
     /**
-     * @param kind $B%V%m%C%/$N<oN`(B
-     * @param p $B%V%m%C%/$N:BI8(B
+     * @param kind ブロックの種類
+     * @param p ブロックの座標
      */
     Block(int kind, Point p) {
         this(kind, p.x, p.y);
     }
 
     /**
-     * @param kind $B%V%m%C%/$N<oN`(B
-     * @param x x$B:BI8(B
-     * @param y y$B:BI8(B
+     * @param kind ブロックの種類
+     * @param x x座標
+     * @param y y座標
      */
     Block(int kind, int x, int y) {
         this.kind = kind;
@@ -338,7 +338,7 @@ class Block {
 
 
     /**
-     * $BJ8;zNs$KJQ49$9$k(B
+     * 文字列に変換する
      */
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -355,7 +355,7 @@ class Block {
 
 
 /**
- * $B%V%m%C%/$N=89g(B
+ * ブロックの集合
  */
 class Board implements Iterable<Block> {
     
@@ -380,11 +380,11 @@ class Board implements Iterable<Block> {
 
 
     /**
-     * $B%G%U%)%k%H%3%s%9%H%i%/%?(B
+     * デフォルトコンストラクタ
      *
-     * @param row $B2#$KJB$V%V%m%C%/$N8D?t(B
-     * @param column $B=D$KJB$V%V%m%C%/$N8D?t(B
-     * @param kinds $B%V%m%C%/$N<oN`(B
+     * @param row 横に並ぶブロックの個数
+     * @param column 縦に並ぶブロックの個数
+     * @param kinds ブロックの種類
      */
     Board(int row, int column, int kinds) {
         this.row = row;
@@ -433,11 +433,11 @@ class Board implements Iterable<Block> {
 
 
     /** 
-     * $B;XDj$7$?:BI8$K;XDj$7$?%V%m%C%/$r%;%C%H$9$k(B
+     * 指定した座標に指定したブロックをセットする
      *
-     * @param x x$B:BI8(B
-     * @param y y$B:BI8(B
-     * @param b $B%V%m%C%/(B
+     * @param x x座標
+     * @param y y座標
+     * @param b ブロック
      */
     public void setBlock(int x, int y, Block b) {
         Block old = block(x,y);
@@ -448,13 +448,13 @@ class Board implements Iterable<Block> {
     }
 
     /**
-     * $B;XDj$7$?:BI8$K$"$k%V%m%C%/$r<hF@$9$k(B
+     * 指定した座標にあるブロックを取得する
      *
-     * $B%V%m%C%/$,B8:_$7$J$$:BI8$J$i!"(Bnull$B$rJV$9(B
+     * ブロックが存在しない座標なら、nullを返す
      *
-     * @param x x$B:BI8(B
-     * @param y y$B:BI8(B
-     * @return $B%V%m%C%/(B
+     * @param x x座標
+     * @param y y座標
+     * @return ブロック
      */
     public Block block(int x, int y) {
         Block block = null;
@@ -474,7 +474,7 @@ class Board implements Iterable<Block> {
 
 
     /**
-     * $B;XDj$7$?(B2$B$D$N%V%m%C%/$rF~$lBX$(>uBV$K$9$k(B
+     * 指定した2つのブロックを入れ替え状態にする
      *
      * @param src
      * @param dst
@@ -505,9 +505,9 @@ class Board implements Iterable<Block> {
     }
 
     /**
-     * $B%\!<%I$r%\!<%I$rJ8;zNsI=5-$K$9$k(B
+     * ボードをボードを文字列表記にする
      *
-     * $B%V%m%C%/$r1Q;z0lJ8;z$GI=$7!"(BAA$B$G%\!<%I$N$h$&$KI=<($9$k(B
+     * ブロックを英字一文字で表し、AAでボードのように表示する
      */
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -650,11 +650,11 @@ class ChangingEvents implements Iterable<ChangingEvents.Event> {
             final int y = b.y;
             final Point p = new Point(x,y);
 
-            // $B2#J}8~$K$D$$$FD4$Y$k(B
+            // 横方向について調べる
             final int horCount = 1 + this.countSameKind(kind, p, 1, 0) + this.countSameKind(kind, p, -1, 0);
             if (horCount>=3) return true;
 
-            // $B=DJ}8~$K$D$$$FD4$Y$k(B
+            // 縦方向について調べる
             final int verCount = 1 + this.countSameKind(kind, p, 0, 1) + this.countSameKind(kind, p, 0, -1);
             if (verCount>=3) return true;
 
@@ -987,9 +987,9 @@ class Game {
 
 
     /**
-     * $BIb$$$F$$$k!J2<$K$"$k%V%m%C%/$,(BNone$B$G$"$k!K%V%m%C%/$r%j%9%H$GJV$9(B
+     * 浮いている（下にあるブロックがNoneである）ブロックをリストで返す
      *
-     * @return $BIb$$$F$$$k%V%m%C%/$N%j%9%H(B
+     * @return 浮いているブロックのリスト
      */
     private List<Block> getFloatingBlocks() {
         ArrayList<Block> floatingBlocks = new ArrayList<Block>();
