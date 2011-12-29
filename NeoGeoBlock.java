@@ -736,8 +736,8 @@ class FallingEvents implements Iterable<FallingEvents.Event> {
         this.events = new TreeSet<Event>(new Comparator<Event>() {
             @Override
             public int compare(Event lhs, Event rhs) {
-                int res = lhs.block().y - rhs.block().y;
-                if (res==0) res = lhs.block().x - rhs.block().x;
+                int res = lhs.block().x - rhs.block().x;
+                if (res==0) res = rhs.block().y - lhs.block().y;
                 return res;
             }
         });
@@ -787,7 +787,7 @@ class FallingEvents implements Iterable<FallingEvents.Event> {
         }
 
         public int offset() {
-            return (int)(Math.pow(count,2));
+            return (int)(Math.pow(count,1.4));
         }
 
         public boolean isEnded() {
@@ -969,7 +969,7 @@ class Game {
         ArrayList<Block> floatingBlocks = new ArrayList<Block>();
         for (int x=0; x<board().row(); x++) {
             boolean floating = false;
-            for (int y=board().column()*2-2; y>=0; y--) {
+            for (int y=board().column()*2-1; y>=0; y--) {
                 Block block = board().block(x,y);
 
                 if (floating && block.fixed()) {
