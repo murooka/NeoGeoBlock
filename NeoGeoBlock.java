@@ -364,6 +364,8 @@ class Board implements Iterable<Block> {
 
     private int row;
     private int column;
+    private int kinds;
+    private Random r;
     private ChangingEvents changingEvents;
     private ErasingEvents erasingEvents;
     private FallingEvents fallingEvents;
@@ -387,6 +389,8 @@ class Board implements Iterable<Block> {
     Board(int row, int column, int kinds) {
         this.row = row;
         this.column = column;
+        this.kinds = kinds;
+        this.r = new Random();
         this.changingEvents = new ChangingEvents(this);
         this.erasingEvents = new ErasingEvents();
         this.fallingEvents = new FallingEvents(this);
@@ -401,7 +405,6 @@ class Board implements Iterable<Block> {
         Block[][] tempBlocks = new Block[row][];
         for (int x=0; x<row; x++) tempBlocks[x] = new Block[column*2];
 
-        Random r = new Random();
         for (int x=0; x<row; x++) {
             for (int y=0; y<column*2; y++) {
 
@@ -480,6 +483,21 @@ class Board implements Iterable<Block> {
         this.changingEvents.addEvent(src, dst);
     }
 
+    public void fill() {
+        for (int x=0; x<row(); x++) {
+            int y = 0;
+            while (true) {
+                Block block = block(x,y);
+                if (block.kind==Block.None) {
+                    block.kind = randomKind();
+                    block.fix();
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+
 
     @Override
     public Iterator<Block> iterator() {
@@ -500,6 +518,11 @@ class Board implements Iterable<Block> {
             sb.append("\n");
         }
         return sb.toString();
+    }
+
+
+    private int randomKind() {
+        return r.nextInt(kinds) + 1;
     }
 
 
@@ -891,6 +914,9 @@ class Game {
         // fall floating blocks
         List<Block> floatingBlocks = getFloatingBlocks();
         if (!floatingBlocks.isEmpty()) board().fallingEvents().addEvent(floatingBlocks);
+
+        // fill empty area
+        board().fill();
 
         // event update
         board().changingEvents().update();
